@@ -1,0 +1,103 @@
+CPSC 3300 - Spring 2016
+Project 2 - Cycle Diagram for the 5-Stage Pipeline with a Register
+            Scoreboard
+
+
+  Due date:         Wednesday, March 23, by midnight
+
+  Submission:       use handin.cs.clemson.edu website
+                      (you may submit either uncompressed source file(s)
+                      or a tar ball [optionally gzipped]; please check
+                      with me first regarding other compressed formats)
+
+  Concepts needed:  assembly language instruction formats, registers,
+                      data dependencies, and register scoreboard logic
+
+  Grading weights:  80% correctness
+                    10% following directions about submission and use
+                          of redirection of stdin for input
+                    10% following directions about the output format
+
+
+This project can be done individually or by a team of at most two
+people.
+
+You may discuss the requirements of the assignment and the sample
+inputs and outputs given below with anyone, but you may not discuss
+the programming solution at either the algorithmic level or the code
+level with anyone other than a teammate.
+
+Write a program to read a file of MIPS-like instructions and generate
+the cycle diagram (i.e., the "stairstep diagram") for the five-stage
+pipeline from the textbook using register scoreboard logic.
+
+The program can be written in any language that runs on SoC Linux
+servers. However, the program must read input from stdin, which can
+be redirected on a command line (or by a grading script) to a source
+file.
+
+The input will be limited to a MIPS-like subset of instructions of
+the following forms, each in fixed format:
+
+add rX,rY,rZ
+sub rX,rY,rZ
+lw  rX,O(rY)
+sw  rZ,O(rY)
+
+For ease of parsing, the instructions are fixed format where X, Y,
+and Z are single-hex-digit register identifiers (0-9,a-f), and O is
+a single-hex-digit offset. Register fields that are identified as
+rX above are destination registers; register fields identified as
+rY above are source 1 registers; and, register fields identified as
+rZ above are source 2 registers. (Thus, note that a load word
+instruction has only one source register and that a store word
+instruction has no destination register.)
+
+The number of instructions in an input file can range from 1 to 20,
+inclusive.
+
+On output, you should echo each instruction and show the relative
+timing of the five stages based on a non-forwarding pipeline in
+which operands are passed between instructions via the register
+file using a register scoreboard. Only successful (i.e., completed)
+pipeline stages should be shown in the output.
+
+The five stages should use the characters IF, ID, EX, DM, and WB,
+respectively. There should be two spaces between the first
+instruction and the characters for the first stage. Each stage
+should be be separated by one space plus three spaces for each
+required stall cycle. (The fixed-format output allows easy grading
+by a grading script, and you will lose points if you do not follow
+the output spacing specification.)
+
+Assume that a non-store-word instruction writes its result back to
+the destination register in the first half-cycle of the write back
+stage and that instructions read source registers in the second
+half-cycle of the decode stage. Thus, for a dependent pair of
+instructions, the ID stage of the consumer instruction can occur
+in the same cycle as the WB stage of the producer instruction. 
+
+You do not have to simulate the execution actions of the input
+instructions; instead, you merely need to show the pipeline stage
+timings based on the register dependencies.
+
+Example input and output follows.
+
+add r3,r1,r2
+add r4,r1,r2
+add r5,r1,r3
+add r6,r1,r5
+lw  r7,0(r1)
+add r9,r7,r8
+sw  r9,0(r1)
+
+add r3,r1,r2  IF ID EX DM WB
+add r4,r1,r2     IF ID EX DM WB
+add r5,r1,r3        IF    ID EX DM WB
+add r6,r1,r5              IF       ID EX DM WB
+lw  r7,0(r1)                       IF ID EX DM WB
+add r9,r7,r8                          IF       ID EX DM WB
+sw  r9,0(r1)                                   IF       ID EX DM WB
+
+You should prepare your own additional test files and testing
+strategies.
