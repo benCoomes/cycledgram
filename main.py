@@ -46,7 +46,7 @@ for s in raw_inst:
         for r in parts[1]:
             r_num = int(r[1])
             inst_regs.append(regs.get(r_num))
-        inst_list.append(Add_inst(inst_regs))
+        inst_list.append(Instruction.Add_inst(inst_regs))
         #cpu.addInst(Add_inst(inst_regs))
 
     elif(parts[0] == 'sub'):
@@ -57,34 +57,40 @@ for s in raw_inst:
             print r
             r_num = int(r[1])
             inst_regs.append(regs.get(r_num))
-        inst_list.append(Sub_inst(inst_regs))
+        inst_list.append(Instruction.Sub_inst(inst_regs))
         #cpu.addInst(Sub_inst(inst_regs))
 
     elif(parts[0] == 'lw'):
         #make lw
         inst_regs = []
-        inst_regs.append(regs.get(int(parts[1][1])))
+        r = parts[1]
+        inst_regs.append(regs.get(int(r[0][1])))
         #assumption about how offset works: 
         # offset + regnum = actual reg num
         # probably wrong, CHECK THIS
-        inst_regs.append(regs.get(int(parts[2][1]) + int(parts[2][3])))
-
-        inst_list.append(Load_inst(inst_regs))
+        inst_regs.append(regs.get(int(r[1][0]) + int(r[1][3])))
+        inst_list.append(Instruction.Load_inst(inst_regs))
         #cpu.addInst(Load_inst(inst_regs))   
 
     elif(parts[0] == 'sw'):
         #make sw
         inst_regs = []
-        inst_regs.append(regs.get(int(parts[1][1])))
+        r = parts[1]
+        inst_regs.append(regs.get(int(r[0][1])))
         #assumption about how offset works: 
         # offset + regnum = actual reg num
         # probably wrong, CHECK THIS
-        inst_regs.append(regs.get(int(parts[2][1]) + int(parts[2][3])))
-        inst_list.append(Store_inst(inst_regs))
+        inst_regs.append(regs.get(int(r[1][0]) + int(r[1][3])))
+        inst_list.append(Instruction.Store_inst(inst_regs))
         #cpu.addInst(Store_inst(inst_regs))
 
     else:
         print "ERROR! Unrecognized instruction"
+
+
+
+for item in inst_list:
+    print item
 #create instance of a subclass of instruction (add, lw, sub, sw)
 #add the created inst to the cpu list
 
