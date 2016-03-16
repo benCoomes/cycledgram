@@ -94,8 +94,8 @@ for s in raw_inst:
 #add the created inst to the cpu list
 cpu = Processor.CPU()
 cpu.addInst(inst_list)
-for i in range(0,4):
-    cpu.tick()
+while cpu.tick():
+    pass
 cpu.printPipeline()
 
 

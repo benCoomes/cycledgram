@@ -1,3 +1,5 @@
+
+
 class CPU(object):
     def __init__(self):
         self.instructions = []
@@ -18,18 +20,25 @@ class CPU(object):
         for i in instruction_list:
             self.instructions.append(i)
             self.output.append(str(i))
-
+    
     def tick(self):
         # go throguh all inst
         inst_finished = False
+        if_open = True
         for inst in self.instructions:
             # default value for inst before window
             inst_out = ""
             #if inst is in window, call cycle on inst and get the output
             if(inst in self.instructions[self.win_start:self.win_end]):
-                inst_out = inst.cycle()
+                if if_open:
+                    inst_out = inst.cycle()
+                else:
+                    inst_out = '  '
                 if(inst_out == 'WB'):
                     inst_finished = True
+                if(inst_out == '  '):
+                    if_open = False
+
             #if inst is after window, set output to appropriate spacing
             elif(inst in self.instructions[self.win_end:]):
                 inst_out = "  "
@@ -38,9 +47,12 @@ class CPU(object):
         #update window values for next tick
         if inst_finished:
             self.win_start += 1
+
+        if (self.win_end - self.win_start) < self.win_max and if_open:
             self.win_end += 1
-        if (self.win_end - self.win_start) < self.win_max:
-            self.win_end += 1
+
+        return self.win_start != len(self.instructions)
+
 
     def printPipeline(self):
         for line in self.output:
