@@ -1,5 +1,5 @@
-class Cpu(object):
-    def __init__():
+class CPU(object):
+    def __init__(self):
         self.instructions = []
         self.output = []
         # lists should only ever hold a single instruction object
@@ -11,16 +11,37 @@ class Cpu(object):
             4 : 'WB'
         }
         self.win_start = 0
-        self.win_end = 4
+        self.win_end = 1
+        self.win_max = 5
 
     def addInst(self, instruction_list):
-        for i in instruction_list
-            self.instuctions.append(i)
+        for i in instruction_list:
+            self.instructions.append(i)
             self.output.append(str(i))
 
     def tick(self):
         # go throguh all inst
-        #if inst is in window, call cycle on inst and get the output
-        #if inst is before window, set output to ""
-        #if inst is after window, set output to appropriate spacing
-        #write output for inst to coor. entry in self.output
+        inst_finished = False
+        for inst in self.instructions:
+            # default value for inst before window
+            inst_out = ""
+            #if inst is in window, call cycle on inst and get the output
+            if(inst in self.instructions[self.win_start:self.win_end]):
+                inst_out = inst.cycle()
+                if(inst_out == 'WB'):
+                    inst_finished = True
+            #if inst is after window, set output to appropriate spacing
+            elif(inst in self.instructions[self.win_end:]):
+                inst_out = "  "
+            #write output for inst to coor. entry in self.output
+            self.output[self.instructions.index(inst)] += inst_out + " "
+        #update window values for next tick
+        if inst_finished:
+            self.win_start += 1
+            self.win_end += 1
+        if (self.win_end - self.win_start) < self.win_max:
+            self.win_end += 1
+
+    def printPipeline(self):
+        for line in self.output:
+            print line

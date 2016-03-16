@@ -1,5 +1,6 @@
 import Instruction
 import Registers
+import Processor
 
 
 # main method start
@@ -91,8 +92,11 @@ for s in raw_inst:
 
 #create instance of a subclass of instruction (add, lw, sub, sw)
 #add the created inst to the cpu list
-cpu = CPU()
-cpu.addInst(instruction_list)
+cpu = Processor.CPU()
+cpu.addInst(inst_list)
+for i in range(0,4):
+    cpu.tick()
+cpu.printPipeline()
 
 
 #run the cpu while there are still unexecuted instructions

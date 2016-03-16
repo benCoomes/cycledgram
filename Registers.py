@@ -4,6 +4,9 @@ class Reg(object):
         self.num = num
         self.isBusy = isBusy
 
+    def __str__(self):
+        return "r%d" % self.num
+
 
 class RegisterSet(object):
 
