@@ -89,10 +89,10 @@ for s in raw_inst:
 
 
 
-for item in inst_list:
-    print item
 #create instance of a subclass of instruction (add, lw, sub, sw)
 #add the created inst to the cpu list
+cpu = CPU()
+cpu.addInst(instruction_list)
 
 
 #run the cpu while there are still unexecuted instructions
