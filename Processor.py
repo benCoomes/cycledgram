@@ -19,7 +19,7 @@ class CPU(object):
     def addInst(self, instruction_list):
         for i in instruction_list:
             self.instructions.append(i)
-            self.output.append(str(i))
+            self.output.append(str(i) + "  ")
     
     def tick(self):
         # go throguh all inst

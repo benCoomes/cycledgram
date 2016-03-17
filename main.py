@@ -26,7 +26,7 @@ raw_inst = []
 next_line = raw_input();
 
 while(next_line != ''):
-    print "You entered: %s" % next_line
+    print next_line
     raw_inst.append(next_line)
     next_line = raw_input()
 
@@ -38,7 +38,6 @@ for s in raw_inst:
     else:
         print "Error: bad string format for instruction input"
 
-    print parts
 
     if(parts[0] == 'add'):
     #make add
@@ -47,7 +46,7 @@ for s in raw_inst:
         for r in parts[1]:
             r_num = int(r[1])
             inst_regs.append(regs.get(r_num))
-        inst_list.append(Instruction.Add_inst(inst_regs))
+        inst_list.append(Instruction.Add_inst(inst_regs, s))
         #cpu.addInst(Add_inst(inst_regs))
 
     elif(parts[0] == 'sub'):
@@ -55,10 +54,9 @@ for s in raw_inst:
         inst_regs = []
         # uncheked assumption
         for r in parts[1]:
-            print r
             r_num = int(r[1])
             inst_regs.append(regs.get(r_num))
-        inst_list.append(Instruction.Sub_inst(inst_regs))
+        inst_list.append(Instruction.Sub_inst(inst_regs, s))
         #cpu.addInst(Sub_inst(inst_regs))
 
     elif(parts[0] == 'lw'):
@@ -70,7 +68,7 @@ for s in raw_inst:
         # offset + regnum = actual reg num
         # probably wrong, CHECK THIS
         inst_regs.append(regs.get(int(r[1][0]) + int(r[1][3])))
-        inst_list.append(Instruction.Load_inst(inst_regs))
+        inst_list.append(Instruction.Load_inst(inst_regs, s))
         #cpu.addInst(Load_inst(inst_regs))   
 
     elif(parts[0] == 'sw'):
@@ -82,7 +80,7 @@ for s in raw_inst:
         # offset + regnum = actual reg num
         # probably wrong, CHECK THIS
         inst_regs.append(regs.get(int(r[1][0]) + int(r[1][3])))
-        inst_list.append(Instruction.Store_inst(inst_regs))
+        inst_list.append(Instruction.Store_inst(inst_regs, s))
         #cpu.addInst(Store_inst(inst_regs))
 
     else:
