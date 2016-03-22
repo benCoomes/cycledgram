@@ -3,10 +3,6 @@ import Registers
 import Processor
 
 
-# main method start
-# ----------------------------------------------
-
-
 # make cpu 
 """
 cpu object holds all instructions. 
@@ -18,15 +14,13 @@ for project).
 """
 
 # process input to generate instructions
-# need to make a set of registers to give instructions as they are made
+# set of registers to give to instructions as they are made
 regs = Registers.RegisterSet(10)
 # read in lines, parse as instructions
-print("Enter commands below, enter an empty line when finished")
 raw_inst = []
 next_line = raw_input();
 
 while(next_line != ''):
-    print next_line
     raw_inst.append(next_line)
     next_line = raw_input()
 
@@ -87,20 +81,12 @@ for s in raw_inst:
         print "ERROR! Unrecognized instruction"
 
 
-
-#create instance of a subclass of instruction (add, lw, sub, sw)
-#add the created inst to the cpu list
 cpu = Processor.CPU()
 cpu.addInst(inst_list)
 while cpu.tick():
     pass
 cpu.printPipeline()
 
-
-#run the cpu while there are still unexecuted instructions
-# cpu.unex_inst keeps track of this
-
-#when all inst have executed, print pipeline
 
 
 
