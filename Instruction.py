@@ -144,8 +144,8 @@ class Load_inst(Inst):
 class Store_inst(Inst):
     def __init__(self, reg_list, string):
         super(Store_inst, self).__init__(string)
-        self.source_regs = reg_list[1]
-        self.product_reg = reg_list[0]
+        self.source_regs = reg_list[0:2]
+        self.product_reg = None
         self.stages = {
             -1: '  ', # wait or unstarted
             0 : 'IF', 
@@ -161,13 +161,8 @@ class Store_inst(Inst):
         if self.currentStage == 0:
             if self.canProceed():
                 self.currentStage += 1
-                self.product_reg.isBusy = True
             else:
                 return self.stages[-1]
-
-        elif self.currentStage == 3:
-            self.currentStage += 1
-            self.product_reg.isBusy = False
             
         elif self.currentStage == 5:
             pass
@@ -178,4 +173,8 @@ class Store_inst(Inst):
         return self.stages[self.currentStage]
 
     def canProceed(self):
-        return not self.source_regs.isBusy and not self.product_reg.isBusy
+        idle_sregs = True
+        for r in self.source_regs:
+            if r.isBusy:
+                idle_sregs = False
+        return idle_sregs
