@@ -1,3 +1,4 @@
+import fileinput
 
 #### Register.py ####
 class Reg(object):
@@ -268,14 +269,15 @@ class CPU(object):
         for line in self.output:
             print line
 
+
+
 regs = RegisterSet(10)
 # read in lines, parse as instructions
 raw_inst = []
 next_line = raw_input();
 
-while(next_line != ''):
-    raw_inst.append(next_line)
-    next_line = raw_input()
+for line in fileinput.input():
+    raw_inst.append(line[:-1])
 
 inst_list = []
 for s in raw_inst:
