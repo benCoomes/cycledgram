@@ -271,11 +271,9 @@ class CPU(object):
 
 
 
-regs = RegisterSet(10)
+regs = RegisterSet(16)
 # read in lines, parse as instructions
 raw_inst = []
-next_line = raw_input();
-
 for line in fileinput.input():
     raw_inst.append(line[:-1])
 
@@ -293,7 +291,7 @@ for s in raw_inst:
         inst_regs = []
         # uncheked assumption
         for r in parts[1]:
-            r_num = int(r[1])
+            r_num = int(r[1], 16)
             inst_regs.append(regs.get(r_num))
         inst_list.append(Add_inst(inst_regs, s))
         #cpu.addInst(Add_inst(inst_regs))
